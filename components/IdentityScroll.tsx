@@ -151,8 +151,8 @@ function OverlaySystem({ scrollProgress }: { scrollProgress: MotionValue<number>
                 className="absolute inset-0 flex flex-col items-center justify-center text-center mt-20 md:mt-60"
             >
                 <div>
-                  <h1 className="text-5xl md:text-[10rem] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-2 md:mb-6">
-                    KAMALESH
+                  <h1 className="text-3xl md:text-[7rem] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-2 md:mb-6">
+                    KAMALESH S A
                   </h1>
                    <div className="flex items-center justify-center gap-2 md:gap-4">
                       <div className="h-[1px] w-8 md:w-24 bg-gradient-to-r from-transparent to-white/50"></div>

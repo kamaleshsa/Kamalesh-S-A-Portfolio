@@ -79,89 +79,89 @@ export function ContentSections() {
       </section>
 
       {/* Skills Section - Technical Grid System */}
-      <section className="py-24 px-8 md:px-24 border-t border-white/10">
-        <h3 className="text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-12">System Mastery</h3>
+      <section className="py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10">
+        <h3 className="text-xs md:text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-12">System Mastery</h3>
         
         {/* Main Grid Container - Architectural Look */}
         <div className="max-w-7xl mx-auto border border-white/15 bg-white/[0.02] backdrop-blur-sm">
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/15">
+          <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/15">
             
             {/* Frontend Module */}
-            <div className="group relative p-8 md:p-10 hover:bg-white/[0.02] transition-colors duration-500">
+            <div className="group relative p-6 md:p-8 lg:p-10 hover:bg-white/[0.02] transition-colors duration-500">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="flex items-center justify-between mb-8">
-                <h4 className="text-2xl font-bold text-white tracking-tight">FRONTEND</h4>
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h4 className="text-xl md:text-2xl font-bold text-white tracking-tight">FRONTEND</h4>
                 <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
                     <span className="text-[10px] font-mono text-gray-500 border border-white/10 px-2 py-1 rounded-sm">V.2.0</span>
                 </div>
               </div>
               
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
                   <span className="text-xs font-mono text-blue-400/50 block mb-2 tracking-wider">CORE</span>
-                  <p className="text-gray-300 font-light text-lg">ReactJS, TypeScript, Tailwind</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">ReactJS, TypeScript, Tailwind</p>
                 </div>
                 <div>
                   <span className="text-xs font-mono text-blue-400/50 block mb-2 tracking-wider">INTERFACE</span>
-                  <p className="text-gray-300 font-light text-lg">Framer Motion, Shadcn/UI</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">Framer Motion, Shadcn/UI</p>
                 </div>
                 <div>
                   <span className="text-xs font-mono text-blue-400/50 block mb-2 tracking-wider">LIBRARY</span>
-                  <p className="text-gray-300 font-light text-lg">HeroUI, Material UI, Aceternity UI</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">HeroUI, Material UI, Aceternity UI</p>
                 </div>
               </div>
             </div>
 
             {/* Backend Module */}
-            <div className="group relative p-8 md:p-10 hover:bg-white/[0.02] transition-colors duration-500">
+            <div className="group relative p-6 md:p-8 lg:p-10 hover:bg-white/[0.02] transition-colors duration-500">
                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="flex items-center justify-between mb-8">
-                <h4 className="text-2xl font-bold text-white tracking-tight">BACKEND</h4>
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h4 className="text-xl md:text-2xl font-bold text-white tracking-tight">BACKEND</h4>
                 <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse"></div>
                     <span className="text-[10px] font-mono text-gray-500 border border-white/10 px-2 py-1 rounded-sm">SYS.D</span>
                 </div>
               </div>
               
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                  <div>
                   <span className="text-xs font-mono text-purple-400/50 block mb-2 tracking-wider">RUNTIME</span>
-                  <p className="text-gray-300 font-light text-lg">Python, Flask, FastAPI</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">Python, Flask, FastAPI</p>
                 </div>
                 <div>
                   <span className="text-xs font-mono text-purple-400/50 block mb-2 tracking-wider">DATA</span>
-                  <p className="text-gray-300 font-light text-lg">PostgreSQL, MySQL</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">PostgreSQL, MySQL</p>
                 </div>
                 <div>
                   <span className="text-xs font-mono text-purple-400/50 block mb-2 tracking-wider">ARCH</span>
-                  <p className="text-gray-300 font-light text-lg">System Design, Microservices</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">System Design, Microservices</p>
                 </div>
               </div>
             </div>
 
             {/* DevOps Module */}
-            <div className="group relative p-8 md:p-10 hover:bg-white/[0.02] transition-colors duration-500">
+            <div className="group relative p-6 md:p-8 lg:p-10 hover:bg-white/[0.02] transition-colors duration-500">
                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="flex items-center justify-between mb-8">
-                <h4 className="text-2xl font-bold text-white tracking-tight">DEVOPS</h4>
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h4 className="text-xl md:text-2xl font-bold text-white tracking-tight">DEVOPS</h4>
                 <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse"></div>
                     <span className="text-[10px] font-mono text-gray-500 border border-white/10 px-2 py-1 rounded-sm">OPS.X</span>
                 </div>
               </div>
               
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
                   <span className="text-xs font-mono text-pink-400/50 block mb-2 tracking-wider">VCS</span>
-                  <p className="text-gray-300 font-light text-lg">Git</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">Git</p>
                 </div>
                 <div>
                   <span className="text-xs font-mono text-pink-400/50 block mb-2 tracking-wider">CONTAINER</span>
-                  <p className="text-gray-300 font-light text-lg">Docker</p>
+                  <p className="text-gray-300 font-light text-base md:text-lg">Docker</p>
                 </div>
               </div>
             </div>
@@ -171,20 +171,20 @@ export function ContentSections() {
       </section>
 
       {/* Client Projects Section - Premium Dossier Style */}
-      <section className="py-20 md:py-32 px-4 md:px-24 border-t border-white/10 relative overflow-hidden">
+      <section className="py-20 md:py-28 lg:py-32 px-4 md:px-12 lg:px-24 border-t border-white/10 relative overflow-hidden">
          {/* Background Elements */}
-         <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-500/5 blur-[80px] md:blur-[100px] pointer-events-none"></div>
+         <div className="absolute top-0 right-0 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] bg-blue-500/5 blur-[80px] md:blur-[100px] pointer-events-none"></div>
          
          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 lg:mb-20">
                 <div>
                    <h3 className="text-xs md:text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-2 md:mb-4">Selected Works</h3>
-                   <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">Client <span className="text-gray-600">Engagements</span></h2>
+                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">Client <span className="text-gray-600">Engagements</span></h2>
                 </div>
-                <div className="hidden md:block h-px w-32 bg-white/20"></div>
+                <div className="hidden lg:block h-px w-32 bg-white/20"></div>
             </div>
          
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
                 {CLIENT_PROJECTS.map((project, idx) => (
                     <div 
                         key={idx}
@@ -194,7 +194,7 @@ export function ContentSections() {
                         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         
                         {/* Top Bar */}
-                        <div className="relative p-4 md:p-6 border-b border-white/5 flex items-center justify-between">
+                        <div className="relative p-4 md:p-5 lg:p-6 border-b border-white/5 flex items-center justify-between">
                             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest">0{idx + 1}</span>
                             <div className="flex items-center gap-2">
                                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
@@ -203,7 +203,7 @@ export function ContentSections() {
                         </div>
 
                         {/* Content */}
-                        <div className="relative p-6 md:p-8 h-auto md:h-[280px] flex flex-col justify-between gap-6 md:gap-0">
+                        <div className="relative p-6 md:p-6 lg:p-8 h-auto md:h-[260px] lg:h-[280px] flex flex-col justify-between gap-6 md:gap-4 lg:gap-0">
                             <div>
                                 <h4 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 group-hover:text-blue-400 transition-colors duration-300">
                                     {project.title}
@@ -213,7 +213,7 @@ export function ContentSections() {
                                 </p>
                             </div>
                             
-                            <div className="pt-6 md:pt-8 border-t border-white/5 mt-auto">
+                            <div className="pt-6 md:pt-6 lg:pt-8 border-t border-white/5 mt-auto">
                                 <span className="text-[10px] font-mono text-gray-600 uppercase block mb-3">Technology Stack</span>
                                 <div className="flex flex-wrap gap-2">
                                     {project.stack.map(tech => (
@@ -235,24 +235,24 @@ export function ContentSections() {
       </section>
 
       {/* Personal Projects Section with Premium Bento Grid */}
-      <section className="py-20 md:py-24 px-4 md:px-24 border-t border-white/10 relative">
+      <section className="py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10 relative">
          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 max-w-7xl mx-auto">
              <div>
                 <h3 className="text-xs md:text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-2 md:mb-4">Innovation Lab</h3>
-                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">Personal <span className="text-gray-600">Projects</span></h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">Personal <span className="text-gray-600">Projects</span></h2>
              </div>
-             <div className="hidden md:flex items-center gap-4">
+             <div className="hidden lg:flex items-center gap-4">
                  <span className="text-xs font-mono text-gray-500">SYSTEM.LAB.01</span>
                  <div className="h-px w-20 bg-white/20"></div>
              </div>
          </div>
          
-         <BentoGrid className="max-w-7xl mx-auto">
+         <BentoGrid className="max-w-7xl mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PERSONAL_PROJECTS.map((project, idx) => (
                 <div 
                     key={idx}
                     onClick={() => setModalProject(project)}
-                    className="cursor-pointer group relative"
+                    className={`cursor-pointer group relative ${idx === 3 || idx === 6 ? "md:col-span-2 lg:col-span-2" : ""}`}
                 >
                     <BentoGridItem
                         title={
@@ -286,7 +286,7 @@ export function ContentSections() {
                                 />
                             </div>
                         }
-                        className={idx === 3 || idx === 6 ? "md:col-span-2" : ""}
+                        className=""
                         icon={
                             <div className="flex gap-2 flex-wrap pt-4 border-t border-white/5">
                                 {project.stack.map(tech => (
@@ -303,9 +303,9 @@ export function ContentSections() {
       </section>
 
       {/* Contact Section - Premium Finale */}
-      <section className="py-24 md:py-40 px-4 md:px-8 relative overflow-hidden flex flex-col items-center justify-center border-t border-white/10">
+      <section className="py-24 md:py-32 lg:py-40 px-4 md:px-12 lg:px-8 relative overflow-hidden flex flex-col items-center justify-center border-t border-white/10">
           {/* Background Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/5 blur-[80px] md:blur-[120px] pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] lg:w-[600px] h-[300px] md:h-[450px] lg:h-[600px] bg-white/5 blur-[80px] md:blur-[100px] lg:blur-[120px] pointer-events-none"></div>
           
           <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
               <div className="flex items-center justify-center gap-2 mb-6 md:mb-8">
@@ -313,7 +313,7 @@ export function ContentSections() {
                   <span className="text-xs md:text-sm font-mono text-gray-400 tracking-widest uppercase">Available for new opportunities</span>
               </div>
               
-              <h2 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter text-white mb-8 md:mb-12 leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-8xl font-bold tracking-tighter text-white mb-8 md:mb-12 leading-tight">
                 Ready to start <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-600">
                     the next revolution?
@@ -357,7 +357,7 @@ export function ContentSections() {
               </div>
           </div>
 
-          <footer className="absolute bottom-0 w-full py-4 md:py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between px-4 md:px-24">
+          <footer className="absolute bottom-0 w-full py-4 md:py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between px-4 md:px-12 lg:px-24">
               <div className="text-[9px] md:text-[10px] text-gray-600 font-mono uppercase tracking-widest mb-2 md:mb-0">
                   © {new Date().getFullYear()} Kamalesh S A
               </div>
