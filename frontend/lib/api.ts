@@ -1,4 +1,20 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const getBaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  // If no URL is provided, we assume we want to use the same domain (relative path)
+  // which works perfectly with Vercel Rewrites or proxying.
+  if (!url || url === 'undefined' || url === 'null') {
+    // In development (browser-side), we might still want localhost for convenience if running separate ports.
+    // However, checking NODE_ENV in browser bundle is standard.
+    if (process.env.NODE_ENV === 'development') {
+        return 'http://localhost:8000';
+    }
+    return ''; // Relative path for production
+  }
+  // Remove trailing slash if present
+  return url.endsWith('/') ? url.slice(0, -1) : url;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 export interface ChatMessage {
   session_id: string;

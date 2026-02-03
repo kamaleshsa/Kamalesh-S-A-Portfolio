@@ -36,14 +36,21 @@ async def cleanup_task():
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown events."""
     # Startup: Start cleanup task
-    task = asyncio.create_task(cleanup_task())
-    print("🚀 Started automatic message cleanup task (runs every 2 hours)")
+    # Note: In Vercel serverless, background tasks like this shouldn't run indefinitely.
+    # We check if we are in development or if a specific env flag allows it.
+    task = None
+    if settings.environment == "development":
+        task = asyncio.create_task(cleanup_task())
+        print("🚀 Started automatic message cleanup task (runs every 2 hours)")
+    else:
+        print("ℹ️ Cleanup task skipped (Production/Serverless environment)")
 
     yield
 
     # Shutdown: Cancel cleanup task
-    task.cancel()
-    print("🛑 Stopped cleanup task")
+    if task:
+        task.cancel()
+        print("🛑 Stopped cleanup task")
 
 
 # Create FastAPI app
