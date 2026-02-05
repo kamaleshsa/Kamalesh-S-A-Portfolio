@@ -2,12 +2,13 @@
 
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import { ProjectModal } from "./ProjectModal";
-// import ContactForm from "./ContactForm";
+import ContactModal from "./ContactModal";
 // import AnalyticsDashboard from "./AnalyticsDashboard";
 import { useState } from "react";
 
 export function ContentSections() {
   const [modalProject, setModalProject] = useState<{ title: string; link: string } | null>(null);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
     <div className="relative z-0 -mt-[100vh] bg-[#0a0a0a] text-white">
@@ -323,10 +324,8 @@ export function ContentSections() {
               </h2>
 
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-12 md:mb-20 w-full px-4">
-                  <a 
-                    href="https://mail.google.com/mail/?view=cm&fs=1&to=kamalkamalesh316@gmail.com" 
-                    target="_blank"
-                    rel="noreferrer"
+                  <button 
+                    onClick={() => setIsContactOpen(true)}
                     className="group relative px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 rounded-full overflow-hidden hover:border-white/20 transition-all duration-300 w-full md:w-auto min-w-[200px]"
                   >
                       <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
@@ -334,7 +333,7 @@ export function ContentSections() {
                           <span>Start a Project</span>
                           <span className="group-hover:translate-x-1 transition-transform">→</span>
                       </span>
-                  </a>
+                  </button>
 
                   <div className="flex gap-4">
                       <a 
@@ -379,6 +378,8 @@ export function ContentSections() {
         onClose={() => setModalProject(null)}
         project={modalProject}
       />
+      
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </div>
   );
 }

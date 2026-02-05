@@ -1,25 +1,23 @@
-from fastapi import APIRouter, HTTPException, Request, Depends
+from fastapi import APIRouter, HTTPException, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+import resend
+import uuid
+from datetime import datetime
 
 from config import get_settings
-from database import get_supabase_client
 from models import ContactFormSubmission, ContactFormResponse
 
 router = APIRouter()
 settings = get_settings()
-supabase = get_supabase_client()
 limiter = Limiter(key_func=get_remote_address)
 
-# Initialize Resend only if API key is provided
+# Initialize Resend
 if settings.resend_api_key:
-    import resend
-
     resend.api_key = settings.resend_api_key
     EMAIL_ENABLED = True
 else:
     EMAIL_ENABLED = False
-    print("⚠️  Email notifications disabled (no RESEND_API_KEY)")
 
 
 @router.post("/submit", response_model=ContactFormResponse)
@@ -28,95 +26,57 @@ else:
 )
 async def submit_contact_form(submission: ContactFormSubmission, request: Request):
     """
-    Submit contact form with rate limiting.
-    Limited to 3 submissions per hour per IP address.
+    Submit contact form.
+    - Sends email via Resend
+    - NO Database storage
     """
-    try:
-        # Get IP address
-        ip_address = request.client.host if request.client else None
-
-        # Insert into database
-        result = (
-            supabase.table("contact_messages")
-            .insert(
-                {
-                    "name": submission.name,
-                    "email": submission.email,
-                    "subject": submission.subject or "Portfolio Contact Form",
-                    "message": submission.message,
-                    "ip_address": ip_address,
-                    "status": "unread",
-                }
-            )
-            .execute()
+    if not EMAIL_ENABLED:
+        print(
+            "❌ Error: Contact form submitted but EMAIL_ENABLED is False (missing RESEND_API_KEY)"
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="System configuration error: Email service not active.",
         )
 
-        message_id = result.data[0]["id"]
+    try:
+        email_subject = submission.subject or "New Portfolio Contact Form Submission"
 
-        # Send email notification (only if enabled)
-        if EMAIL_ENABLED:
-            try:
-                email_subject = (
-                    submission.subject or "New Portfolio Contact Form Submission"
-                )
+        # Send email via Resend
+        # NOTE: Using 'onboarding@resend.dev' is required for testing without a verified domain.
+        r = resend.Emails.send(
+            {
+                "from": "onboarding@resend.dev",
+                "to": settings.contact_email,
+                "subject": f"Portfolio Contact: {email_subject}",
+                "html": f"""
+            <h2>New Contact Form Submission</h2>
+            <p><strong>From:</strong> {submission.name} ({submission.email})</p>
+            <p><strong>Subject:</strong> {email_subject}</p>
+            <p><strong>Message:</strong></p>
+            <p>{submission.message}</p>
+            <hr>
+            <p><small>Submitted at: {datetime.now().isoformat()}</small></p>
+            """,
+            }
+        )
 
-                resend.Emails.send(
-                    {
-                        "from": "portfolio@kamalesh.dev",  # Update with your verified domain
-                        "to": settings.contact_email,
-                        "subject": f"Portfolio Contact: {email_subject}",
-                        "html": f"""
-                    <h2>New Contact Form Submission</h2>
-                    <p><strong>From:</strong> {submission.name} ({submission.email})</p>
-                    <p><strong>Subject:</strong> {email_subject}</p>
-                    <p><strong>Message:</strong></p>
-                    <p>{submission.message}</p>
-                    <hr>
-                    <p><small>Submitted at: {result.data[0]["created_at"]}</small></p>
-                    """,
-                    }
-                )
-            except Exception as email_error:
-                # Log email error but don't fail the request
-                print(f"Email notification failed: {email_error}")
-        else:
-            print("✅ Message saved to database (email notifications disabled)")
+        print(f"✅ Email sent successfully via Resend. ID: {r.get('id')}")
 
         return ContactFormResponse(
             success=True,
-            message="Thank you for your message! I'll get back to you soon.",
-            id=message_id,
+            message="Transmission successful. Uplink established.",
+            id=r.get("id") or str(uuid.uuid4()),
         )
 
     except Exception as e:
-        # Check if it's a rate limit error
+        print(f"❌ Email sending failed: {str(e)}")
+        # Check if it's a rate limit error from slowapi or resend
         if "rate limit" in str(e).lower():
             raise HTTPException(
-                status_code=429, detail="Too many submissions. Please try again later."
+                status_code=429, detail="Too many submissions. Connection throttled."
             )
-        raise HTTPException(status_code=500, detail=f"Error submitting form: {str(e)}")
 
-
-@router.get("/messages")
-async def get_messages(status: str = None):
-    """
-    Get contact messages (admin endpoint - should be protected in production).
-    """
-    try:
-        query = (
-            supabase.table("contact_messages")
-            .select("*")
-            .order("created_at", desc=True)
-        )
-
-        if status:
-            query = query.eq("status", status)
-
-        result = query.execute()
-
-        return {"messages": result.data, "count": len(result.data)}
-
-    except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Error fetching messages: {str(e)}"
+            status_code=500, detail="Transmission failed. Please try again later."
         )

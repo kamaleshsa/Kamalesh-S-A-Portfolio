@@ -61,7 +61,7 @@ class ContactFormSubmission(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
     email: str = Field(..., description="Valid email address")
     subject: Optional[str] = Field(None, max_length=200)
-    message: str = Field(..., min_length=10, max_length=2000)
+    message: str = Field(..., min_length=1, max_length=5000)
 
 
 class ContactFormResponse(BaseModel):

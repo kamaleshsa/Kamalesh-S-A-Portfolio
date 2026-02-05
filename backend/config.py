@@ -15,8 +15,8 @@ class Settings(BaseSettings):
     openai_api_keys: str  # Comma-separated list of API keys
 
     # Email Configuration
-    resend_api_key: str = ""  # Optional for testing
-    contact_email: str = "your_email@example.com"
+    resend_api_key: str = ""
+    contact_email: str = "kamaleshsa8300@gmail.com"
 
     # Application Configuration
     frontend_url: str = "http://localhost:3000"
