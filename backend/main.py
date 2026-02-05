@@ -8,7 +8,7 @@ import asyncio
 from contextlib import asynccontextmanager
 
 from config import get_settings
-from routes import chat, analytics, contact, cleanup
+from routes import chat, analytics, contact, cleanup, monitor
 
 # Initialize settings
 settings = get_settings()
@@ -24,12 +24,18 @@ async def cleanup_task():
 
     while True:
         try:
-            await asyncio.sleep(7200)  # 2 hours
+            print("🧹 Running scheduled cleanup...")
             async with httpx.AsyncClient() as client:
-                await client.delete("http://localhost:8000/api/cleanup")
+                # Use backend URL from environment settings for all environments
+                base_url = settings.backend_url
+
+                await client.delete(f"{base_url}/api/cleanup/")
                 print("✅ Cleaned up old messages")
+
+            await asyncio.sleep(7200)  # Sleep for 2 hours
         except Exception as e:
             print(f"❌ Cleanup task error: {e}")
+            await asyncio.sleep(60)  # Wait a bit before retrying on error
 
 
 @asynccontextmanager
@@ -40,10 +46,21 @@ async def lifespan(app: FastAPI):
     # We check if we are in development or if a specific env flag allows it.
     task = None
     if settings.environment == "development":
+        # Give server a moment to start before running first cleanup
+        await asyncio.sleep(2)
         task = asyncio.create_task(cleanup_task())
-        print("🚀 Started automatic message cleanup task (runs every 2 hours)")
+        print(
+            "🚀 Started automatic message cleanup task (runs immediately and every 2 hours)"
+        )
     else:
         print("ℹ️ Cleanup task skipped (Production/Serverless environment)")
+
+    # Start System Monitor (Engine Room)
+    # We import inside to avoid circular deps if any, though here it's fine.
+    from routes.monitor import system_stats_generator
+
+    monitor_task = asyncio.create_task(system_stats_generator())
+    print("🖥️  Started Engine Room system monitor")
 
     yield
 
@@ -51,6 +68,10 @@ async def lifespan(app: FastAPI):
     if task:
         task.cancel()
         print("🛑 Stopped cleanup task")
+
+    if monitor_task:
+        monitor_task.cancel()
+        print("🛑 Stopped system monitor")
 
 
 # Create FastAPI app
@@ -89,6 +110,10 @@ app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"]
 app.include_router(contact.router, prefix="/api/contact", tags=["Contact"])
 app.include_router(cleanup.router, prefix="/api/cleanup", tags=["Cleanup"])
 
+app.include_router(
+    monitor.router, tags=["Monitor"]
+)  # No prefix for WebSocket or use /ws in route
+
 
 @app.get("/")
 async def root():
@@ -99,7 +124,13 @@ async def root():
 @app.get("/api/health")
 async def health_check():
     """Health check endpoint."""
-    return {"status": "healthy", "environment": settings.environment}
+    # Ensure google_api_key or gemini_api_key is picked up
+    has_gemini = bool(settings.google_api_key or settings.gemini_api_key)
+    return {
+        "status": "healthy",
+        "environment": settings.environment,
+        "gemini_configured": has_gemini,
+    }
 
 
 if __name__ == "__main__":

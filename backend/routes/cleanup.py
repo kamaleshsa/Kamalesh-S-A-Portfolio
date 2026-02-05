@@ -8,7 +8,7 @@ settings = get_settings()
 supabase = get_supabase_client()
 
 
-@router.delete("/cleanup")
+@router.delete("/")
 async def cleanup_old_data():
     """
     Delete old data to save database storage.

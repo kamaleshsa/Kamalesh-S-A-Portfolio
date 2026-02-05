@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"
 
     def get_openai_keys(self) -> List[str]:
         """Parse comma-separated API keys."""
