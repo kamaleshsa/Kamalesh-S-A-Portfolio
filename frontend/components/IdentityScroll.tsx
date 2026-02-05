@@ -164,62 +164,77 @@ function OverlaySystem({ scrollProgress }: { scrollProgress: MotionValue<number>
                 </div>
             </motion.div>
 
-            {/* STAGE 2: SKILLS BREAKDOWN (Glass Card moved to RIGHT) */}
+            {/* STAGE 2: THE ARCHITECT (Editorial Style - RIGHT) */}
             <motion.div 
                 style={{ opacity: opacity2, y: y2 }}
-                className="absolute inset-0 flex items-center justify-center md:justify-end px-4 md:px-24"
+                className="absolute inset-0 flex items-end justify-center md:justify-end px-8 md:px-32 pb-32"
             >
-                <div className="w-full max-w-sm md:max-w-lg bg-black/10 md:bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-10 rounded-3xl shadow-2xl md:text-right relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative text-right">
+                    {/* Vertical Line Decoration */}
+                    <div className="absolute -right-8 top-0 bottom-0 w-[1px] bg-white/30"></div>
                     
-                    <div className="relative z-10">
-                        <div className="flex items-center justify-between md:justify-end gap-3 mb-6">
-                            <span className="text-[10px] md:text-xs font-mono text-blue-400 uppercase tracking-widest border border-blue-500/30 px-2 py-1 rounded">Development Core</span>
-                            <div className="relative">
-                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                <div className="absolute inset-0 w-2 h-2 bg-blue-500 rounded-full animate-ping"></div>
-                            </div>
+                    <div className="flex flex-col gap-2 items-end">
+                        <div className="flex items-center gap-3">
+                             <span className="font-mono text-xs text-gray-400 tracking-[0.3em] uppercase">Core Skills</span>
+                             <div className="h-[1px] w-12 bg-white/50"></div>
                         </div>
                         
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 md:mb-8 leading-tight tracking-tight text-left md:text-right">
-                            Engineering <br/> 
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                                Excellence.
-                            </span>
+                        <h2 className="text-5xl md:text-8xl font-serif text-white leading-[0.9] tracking-tighter mix-blend-difference">
+                            Backend <br/>
+                            <span className="italic font-light text-gray-300">Development.</span>
                         </h2>
                         
-                        <div className="grid grid-cols-2 gap-2 md:gap-3">
-                            {['Clean Architecture', 'API Development', 'DB Optimization', 'Security First'].map((item) => (
-                               <div key={item} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 md:px-4 md:py-3 text-[10px] md:text-xs text-gray-200 font-mono hover:bg-white/10 transition-colors text-center">
-                                   {item}
-                               </div> 
-                            ))}
-                        </div>
+                        <p className="max-w-md mt-6 text-sm md:text-lg text-gray-400 font-light leading-relaxed">
+                            Building strategies systems that are secure and scalable. I focus on clean logic, database efficiency, and API performance.
+                            <span className="block text-xs font-mono text-gray-500 mt-2 tracking-widest">
+                                /// PYTHON • FASTAPI • POSTGRESQL
+                            </span>
+                        </p>
+                    </div>
+
+                    {/* Subtle Coordinate System */}
+                    <div className="absolute -left-20 top-0 font-mono text-[9px] text-gray-600 flex flex-col gap-1 items-start opacity-50">
+                        <span>X: 45.902</span>
+                        <span>Y: 12.004</span>
+                        <span>Z: 00.110</span>
                     </div>
                 </div>
             </motion.div>
 
-            {/* STAGE 3: EXPERIENCE (Glass Card moved to LEFT) */}
+            {/* STAGE 3: THE ALCHEMIST (Editorial Style - LEFT) */}
             <motion.div 
                 style={{ opacity: opacity3, y: y3 }}
-                className="absolute inset-0 flex items-center justify-center md:justify-start px-4 md:px-24"
+                className="absolute inset-0 flex items-start justify-center md:justify-start px-8 md:px-32 pt-40"
             >
-                 <div className="w-full max-w-sm md:max-w-lg bg-black/20 backdrop-blur-md border border-white/10 p-6 md:p-10 rounded-2xl shadow-2xl">
-                    <div className="flex items-center justify-between md:justify-start gap-2 mb-6">
-                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                            <span className="text-[10px] md:text-xs font-mono text-purple-400 uppercase tracking-widest">Tech Stack</span>
-                         </div>
-                    </div>
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                        Full Stack <br/> <span className="text-gray-500">Mastery.</span>
-                    </h2>
-                     <div className="flex flex-wrap gap-2">
-                        {['React', 'FastAPI', 'PostgreSQL', 'Docker'].map((item) => (
-                           <div key={item} className="bg-white/5 border border-white/5 rounded px-3 py-2 text-[10px] md:text-xs text-gray-300 font-mono">
-                               {item}
-                           </div> 
-                        ))}
+                 <div className="relative text-left group">
+                    {/* Soft Radial Glow */}
+                    <div className="absolute -inset-20 bg-purple-500/5 blur-[100px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+
+                    <div className="flex flex-col items-start gap-2 relative z-10">
+                        <div className="flex items-center gap-3">
+                             <div className="h-[1px] w-12 bg-white/50"></div>
+                             <span className="font-mono text-xs text-gray-400 tracking-[0.3em] uppercase">User Experience</span>
+                        </div>
+                        
+                        <h2 className="text-5xl md:text-8xl font-serif text-white leading-[0.9] tracking-tighter">
+                            Frontend <br/>
+                            <span className="italic font-light text-purple-200">Engineering.</span>
+                        </h2>
+
+                        <p className="max-w-md mt-6 text-sm md:text-lg text-gray-300 font-light leading-relaxed">
+                            Crafting responsive, smooth web applications. I care about details, accessibility, and making things feel great to use.
+                        </p>
+
+                        {/* Ticker Tape Tech Stack */}
+                        <div className="mt-8 overflow-hidden w-64 border-t border-b border-white/10 py-2">
+                             <div className="flex whitespace-nowrap animate-marquee font-mono text-xs text-gray-500">
+                                 <span className="mx-4">REACT</span>
+                                 <span className="mx-4">NEXT.JS</span>
+                                 <span className="mx-4">TYPESCRIPT</span>
+                                 <span className="mx-4">THREE.JS</span>
+                                 <span className="mx-4">SUPABASE</span>
+                             </div>
+                        </div>
                     </div>
                 </div>
             </motion.div>
