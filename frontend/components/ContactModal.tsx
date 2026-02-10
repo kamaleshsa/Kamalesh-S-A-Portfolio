@@ -33,7 +33,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         setStatus('SENDING');
 
         try {
-            const response = await fetch('http://localhost:8000/api/contact/submit', {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/api/contact/submit`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
