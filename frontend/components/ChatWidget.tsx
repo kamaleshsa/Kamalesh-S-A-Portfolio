@@ -85,7 +85,7 @@ export default function ChatWidget() {
       >
         {/* Outer glow */}
         <div className="absolute -inset-3 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700" />
-        
+
         {/* Button body */}
         <div className="relative p-4 bg-[#111] border border-white/15 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.8)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.08)] transition-all duration-500 hover:border-white/30 hover:scale-105 active:scale-95">
           <MessageCircle className="w-6 h-6 text-white/90" />

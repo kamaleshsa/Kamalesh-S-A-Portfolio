@@ -16,6 +16,15 @@ export default function Home() {
       <ContentSections />
       <LiveAnalytics />
       <ChatWidget />
+      {/* Fixed looping video - bottom left, above all sections */}
+      <video
+        src="/corner-video.webm"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed bottom-4 -left-8 z-[9999] w-32 md:w-44 pointer-events-none"
+      />
     </main>
   );
 }

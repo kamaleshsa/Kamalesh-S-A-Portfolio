@@ -14,7 +14,7 @@ export function ContentSections() {
     <div className="relative z-0 -mt-[100vh] bg-[#0a0a0a] text-white">
       
       {/* About Me Section */}
-      <section className="py-24 px-8 md:px-24 border-t border-white/10">
+      <section className="min-h-screen py-24 px-8 md:px-24 border-t border-white/10">
         <h3 className="text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-12">Who Am I</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="text-2xl md:text-3xl font-light leading-relaxed text-gray-200">
@@ -30,7 +30,7 @@ export function ContentSections() {
       </section>
 
       {/* Experience Section with Timeline */}
-      <section className="py-24 px-8 md:px-24 border-t border-white/10">
+      <section className="min-h-screen py-24 px-8 md:px-24 border-t border-white/10">
         <h3 className="text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-12">Experience</h3>
         
         <div className="max-w-5xl mx-auto">
@@ -82,7 +82,7 @@ export function ContentSections() {
       </section>
 
       {/* Skills Section - Technical Grid System */}
-      <section className="py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10">
+      <section className="min-h-screen py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10">
         <h3 className="text-xs md:text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-12">System Mastery</h3>
         
         {/* Main Grid Container - Architectural Look */}
@@ -174,7 +174,7 @@ export function ContentSections() {
       </section>
 
       {/* Client Projects Section - Premium Dossier Style */}
-      <section className="py-20 md:py-28 lg:py-32 px-4 md:px-12 lg:px-24 border-t border-white/10 relative overflow-hidden">
+      <section className="min-h-screen py-20 md:py-28 lg:py-32 px-4 md:px-12 lg:px-24 border-t border-white/10 relative overflow-hidden">
          {/* Background Elements */}
          <div className="absolute top-0 right-0 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] bg-blue-500/5 blur-[80px] md:blur-[100px] pointer-events-none"></div>
          
@@ -238,7 +238,7 @@ export function ContentSections() {
       </section>
 
       {/* Personal Projects Section with Premium Bento Grid */}
-      <section className="py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10 relative">
+      <section className="min-h-screen py-20 md:py-24 lg:py-24 px-4 md:px-12 lg:px-24 border-t border-white/10 relative">
          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 max-w-7xl mx-auto">
              <div>
                 <h3 className="text-xs md:text-sm font-light tracking-[0.2em] uppercase text-gray-400 mb-2 md:mb-4">Innovation Lab</h3>
@@ -306,7 +306,7 @@ export function ContentSections() {
       </section>
 
       {/* Contact Section - Premium Finale */}
-      <section className="py-24 md:py-32 lg:py-40 px-4 md:px-12 lg:px-8 relative overflow-hidden flex flex-col items-center justify-center border-t border-white/10">
+      <section className="min-h-screen py-24 md:py-32 lg:py-40 px-4 md:px-12 lg:px-8 relative overflow-hidden flex flex-col items-center justify-center border-t border-white/10">
           {/* Background Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] lg:w-[600px] h-[300px] md:h-[450px] lg:h-[600px] bg-white/5 blur-[80px] md:blur-[100px] lg:blur-[120px] pointer-events-none"></div>
           
