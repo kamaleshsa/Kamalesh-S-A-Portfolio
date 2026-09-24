@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # NVIDIA NIM Configuration (fallback provider when Mistral keys are exhausted)
     # Free keys from https://build.nvidia.com - OpenAI-compatible API
     nvidia_api_keys: str = ""  # Comma-separated list of API keys
-    nvidia_ai_model: str = "meta/llama-3.1-8b-instruct"
+    nvidia_ai_model: str = "meta/llama-3.2-11b-vision-instruct"
 
     # Email Configuration
     resend_api_key: str = ""
