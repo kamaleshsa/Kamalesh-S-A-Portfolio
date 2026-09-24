@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 from datetime import datetime, timedelta
 from typing import Dict
 
@@ -51,7 +51,10 @@ async def track_event(event: AnalyticsEvent, request: Request):
         return {"success": True, "message": "Counter updated"}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error tracking: {str(e)}")
+        # Fire-and-forget from the frontend - a Supabase outage shouldn't spam
+        # 500s in the logs or surface as an error to the visitor.
+        print(f"⚠️ Error tracking event: {e}")
+        return {"success": False, "message": "Counter update skipped"}
 
 
 @router.get("/stats", response_model=AnalyticsStats)
@@ -152,7 +155,16 @@ async def get_stats():
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching stats: {str(e)}")
+        # Analytics are non-critical (e.g. a paused/unreachable Supabase project
+        # shouldn't break the page) - log server-side and degrade to safe defaults.
+        print(f"⚠️ Error fetching stats: {e}")
+        return AnalyticsStats(
+            total_visitors=0,
+            live_visitors=0,
+            total_page_views=0,
+            popular_sections=[],
+            recent_events=[],
+        )
 
 
 @router.get("/visitors/live")
@@ -194,6 +206,11 @@ async def get_live_visitors():
         }
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error fetching live visitors: {str(e)}"
-        )
+        # Non-critical widget - a paused/unreachable Supabase project shouldn't
+        # surface as a 500 to the page. Log server-side and degrade instead.
+        print(f"⚠️ Error fetching live visitors: {e}")
+        return {
+            "active_visitors": 0,
+            "total_views": 0,
+            "timestamp": datetime.utcnow().isoformat(),
+        }

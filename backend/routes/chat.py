@@ -11,22 +11,22 @@ router = APIRouter()
 settings = get_settings()
 supabase = get_supabase_client()
 
-# Get all API keys
-API_KEYS = settings.get_openai_keys()  # Reusing same config
-current_key_index = 0
-
-
-def get_current_api_key() -> str:
-    """Get current Mistral API key."""
-    global current_key_index
-    return API_KEYS[current_key_index % len(API_KEYS)]
-
-
-def try_next_api_key():
-    """Rotate to next API key."""
-    global current_key_index
-    current_key_index = (current_key_index + 1) % len(API_KEYS)
-    print(f"Rotating to API key {current_key_index + 1}/{len(API_KEYS)}")
+# AI providers to try, in order. NVIDIA NIM (free tier, OpenAI-compatible) is
+# the fallback for when the primary Mistral keys are rate-limited/exhausted.
+PROVIDERS = [
+    {
+        "name": "Mistral",
+        "url": "https://api.mistral.ai/v1/chat/completions",
+        "keys": settings.get_openai_keys(),  # env var name kept for compatibility
+        "model": settings.ai_model,
+    },
+    {
+        "name": "NVIDIA NIM",
+        "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+        "keys": settings.get_nvidia_keys(),
+        "model": settings.nvidia_ai_model,
+    },
+]
 
 
 # Load knowledge base from file
@@ -173,55 +173,55 @@ async def send_message(chat_message: ChatMessage, request: Request):
         for msg in history.data:
             messages.append({"role": msg["role"], "content": msg["content"]})
 
-        # Get AI response with key rotation
+        # Get AI response, trying each provider's keys in order until one works
         ai_response = None
         last_error = None
 
-        # Try all API keys
-        for attempt in range(len(API_KEYS)):
-            try:
-                # Call Mistral API directly
-                async with httpx.AsyncClient() as client:
-                    response = await client.post(
-                        "https://api.mistral.ai/v1/chat/completions",
-                        headers={
-                            "Authorization": f"Bearer {get_current_api_key()}",
-                            "Content-Type": "application/json",
-                        },
-                        json={
-                            "model": settings.ai_model,
-                            "messages": messages,
-                            "temperature": settings.ai_temperature,
-                            "max_tokens": settings.ai_max_tokens,
-                        },
-                        timeout=30.0,
-                    )
+        for provider in PROVIDERS:
+            if not provider["keys"]:
+                continue  # provider not configured, skip
 
-                    if response.status_code == 200:
-                        result = response.json()
-                        ai_response = result["choices"][0]["message"]["content"]
-                        break  # Success! Exit loop
-                    else:
-                        raise Exception(
-                            f"API error: {response.status_code} - {response.text}"
+            for key_index, api_key in enumerate(provider["keys"]):
+                try:
+                    async with httpx.AsyncClient() as client:
+                        response = await client.post(
+                            provider["url"],
+                            headers={
+                                "Authorization": f"Bearer {api_key}",
+                                "Content-Type": "application/json",
+                            },
+                            json={
+                                "model": provider["model"],
+                                "messages": messages,
+                                "temperature": settings.ai_temperature,
+                                "max_tokens": settings.ai_max_tokens,
+                            },
+                            timeout=30.0,
                         )
 
-            except Exception as e:
-                last_error = str(e)
-                print(f"API key {current_key_index + 1} failed: {last_error}")
+                        if response.status_code == 200:
+                            result = response.json()
+                            ai_response = result["choices"][0]["message"]["content"]
+                            break  # Success! Exit key loop
+                        else:
+                            raise Exception(
+                                f"API error: {response.status_code} - {response.text}"
+                            )
 
-                # If this was the last key, raise error
-                if attempt == len(API_KEYS) - 1:
-                    raise HTTPException(
-                        status_code=500,
-                        detail=f"All API keys exhausted. Last error: {last_error}",
+                except Exception as e:
+                    last_error = str(e)
+                    print(
+                        f"{provider['name']} key {key_index + 1}/{len(provider['keys'])} failed: {last_error}"
                     )
 
-                # Try next key
-                try_next_api_key()
+            if ai_response:
+                break  # Success! Exit provider loop
 
         if not ai_response:
-            raise HTTPException(status_code=500, detail="Failed to get AI response")
+            raise HTTPException(
+                status_code=500,
+                detail=f"All providers/keys exhausted. Last error: {last_error}",
+            )
 
         # Store AI response
         supabase.table("messages").insert(
@@ -234,9 +234,16 @@ async def send_message(chat_message: ChatMessage, request: Request):
 
         return ChatResponse(message=ai_response, conversation_id=str(conversation_id))
 
+    except HTTPException:
+        raise
     except Exception as e:
+        # Log the real cause server-side, but never leak raw upstream error
+        # bodies (e.g. a Cloudflare 521 HTML page from a paused Supabase
+        # project) to the client.
+        print(f"⚠️ Error processing message: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Error processing message: {str(e)}"
+            status_code=503,
+            detail="Chat is temporarily unavailable. Please try again shortly.",
         )
 
 
@@ -271,4 +278,7 @@ async def get_conversation_history(session_id: str):
         return messages.data
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching history: {str(e)}")
+        # Non-critical - a paused/unreachable Supabase project shouldn't break
+        # the chat widget's history load. Log server-side, return empty history.
+        print(f"⚠️ Error fetching history: {e}")
+        return []

@@ -5,9 +5,16 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import asyncio
+import os
 from contextlib import asynccontextmanager
 
+# Vercel (and most serverless hosts) freeze/thaw the process between requests.
+# Infinite background asyncio loops don't survive that correctly and can leave
+# sockets/file descriptors in a broken state, so never start them there.
+IS_SERVERLESS = bool(os.environ.get("VERCEL"))
+
 from config import get_settings
+from database import get_supabase_client
 from routes import chat, analytics, contact, cleanup, monitor
 
 # Initialize settings
@@ -45,22 +52,23 @@ async def lifespan(app: FastAPI):
     # Note: In Vercel serverless, background tasks like this shouldn't run indefinitely.
     # We check if we are in development or if a specific env flag allows it.
     task = None
-    if settings.environment == "development":
+    monitor_task = None
+    if not IS_SERVERLESS and settings.environment == "development":
         # Give server a moment to start before running first cleanup
         await asyncio.sleep(2)
         task = asyncio.create_task(cleanup_task())
         print(
             "🚀 Started automatic message cleanup task (runs immediately and every 2 hours)"
         )
+
+        # Start System Monitor (Engine Room) - local dev only, not viable on
+        # frozen/serverless containers (see IS_SERVERLESS above).
+        from routes.monitor import system_stats_generator
+
+        monitor_task = asyncio.create_task(system_stats_generator())
+        print("🖥️  Started Engine Room system monitor")
     else:
-        print("ℹ️ Cleanup task skipped (Production/Serverless environment)")
-
-    # Start System Monitor (Engine Room)
-    # We import inside to avoid circular deps if any, though here it's fine.
-    from routes.monitor import system_stats_generator
-
-    monitor_task = asyncio.create_task(system_stats_generator())
-    print("🖥️  Started Engine Room system monitor")
+        print("ℹ️ Background tasks skipped (Production/Serverless environment)")
 
     yield
 
@@ -123,13 +131,24 @@ async def root():
 
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint."""
-    # Ensure google_api_key or gemini_api_key is picked up
-    has_gemini = bool(settings.google_api_key or settings.gemini_api_key)
+    """
+    Health check endpoint. Also serves as the Vercel Cron keep-alive target:
+    Supabase's free tier auto-pauses a project after 7 days of no activity,
+    so a periodic hit here that touches the database prevents that.
+    """
+    db_status = "connected"
+    try:
+        get_supabase_client().table("analytics_counters").select(
+            "counter_name"
+        ).limit(1).execute()
+    except Exception as e:
+        db_status = "unreachable"
+        print(f"⚠️ Health check: database unreachable: {e}")
+
     return {
         "status": "healthy",
         "environment": settings.environment,
-        "gemini_configured": has_gemini,
+        "database": db_status,
     }
 
 
